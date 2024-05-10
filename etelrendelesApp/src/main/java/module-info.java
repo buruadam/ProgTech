@@ -14,6 +14,9 @@ module com.progtech.etelrendelesapp {
 
     opens com.progtech.etelrendelesapp to javafx.fxml;
     exports com.progtech.etelrendelesapp;
-    exports com.progtech.etelrendelesapp.controllers;
-    opens com.progtech.etelrendelesapp.controllers to javafx.fxml;
+    exports com.progtech.etelrendelesapp.controller;
+    opens com.progtech.etelrendelesapp.controller to javafx.fxml;
+
+    opens com.progtech.etelrendelesapp.model to java.base;
+    exports com.progtech.etelrendelesapp.model;
 }
