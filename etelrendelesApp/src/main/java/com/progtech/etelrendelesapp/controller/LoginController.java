@@ -12,6 +12,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
+    public void setEmailField(TextField emailField) {
+        this.emailField = emailField;
+    }
+
+    public void setPasswordField(PasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public void setMessageLabel(Label messageLabel) {
+        this.messageLabel = messageLabel;
+    }
+
     @FXML
     private TextField emailField;
 
@@ -23,9 +35,11 @@ public class LoginController {
 
     private LoginDAO loginDAO;
 
-    public LoginController() {
+    public LoginController(LoginDAO mockLoginDAO) {
         loginDAO = new LoginDAO();
     }
+
+    public LoginController() { loginDAO = new LoginDAO(); }
 
     @FXML
     public void handleLogin() {
