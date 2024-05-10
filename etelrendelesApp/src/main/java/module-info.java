@@ -11,6 +11,7 @@ module com.progtech.etelrendelesapp {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+    requires spring.security.crypto;
 
     opens com.progtech.etelrendelesapp to javafx.fxml;
     exports com.progtech.etelrendelesapp;

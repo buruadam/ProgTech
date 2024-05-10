@@ -1,11 +1,11 @@
 package com.progtech.etelrendelesapp.controller;
 
+import com.progtech.etelrendelesapp.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import com.progtech.etelrendelesapp.model.Login;
 import com.progtech.etelrendelesapp.model.LoginDAO;
 import javafx.stage.Stage;
 
@@ -32,9 +32,9 @@ public class LoginController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        Login login = new Login(email, password);
+        User user = new User(email, password);
 
-        boolean isAuthenticated = loginDAO.authenticate(login);
+        boolean isAuthenticated = loginDAO.authenticate(user);
 
         if (isAuthenticated) {
 
@@ -51,8 +51,23 @@ public class LoginController {
                 e.printStackTrace();
             }
         } else {
-            messageLabel.setText("Invalid email or password.");
+            messageLabel.setText("Helytelen felhasználónév vagy jelszó");
             messageLabel.setStyle("-fx-text-fill: red;");
+        }
+    }
+
+    public void navToRegister() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/register-view.fxml"));
+            Parent root = loader.load();
+            Scene newScene = new Scene(root);
+
+            Stage currentStage = (Stage) emailField.getScene().getWindow();
+            currentStage.setScene(newScene);
+            currentStage.setTitle("ÉtelrendelésAPP");
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

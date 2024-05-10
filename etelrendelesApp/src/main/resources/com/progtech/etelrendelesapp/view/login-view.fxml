@@ -15,4 +15,5 @@
    <PasswordField fx:id="passwordField" />
    <Label fx:id="messageLabel" text="" />
     <Button onAction="#handleLogin" text="Bejelentkezés" />
+    <Button onAction="#navToRegister" text="Regisztrálok"></Button>
 </VBox>

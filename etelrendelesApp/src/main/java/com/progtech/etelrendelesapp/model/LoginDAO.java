@@ -1,6 +1,7 @@
 package com.progtech.etelrendelesapp.model;
 
 import com.progtech.etelrendelesapp.database.Database;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.*;
 
@@ -11,14 +12,19 @@ public class LoginDAO {
         this.connection = Database.ConnectToDatabase();
     }
 
-    public boolean authenticate(Login login) {
-        String query = "SELECT * FROM user WHERE email = ? AND password = ?";
+    public boolean authenticate(User user) {
+        String query = "SELECT password FROM user WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, login.getEmail());
-            stmt.setString(2, login.getPassword());
+            stmt.setString(1, user.getEmail());
 
             ResultSet rs = stmt.executeQuery();
-            return rs.next();
+            if (rs.next()) {
+                String storedHashedPassword = rs.getString("password");
+
+                return BCrypt.checkpw(user.getPassword(), storedHashedPassword);
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
