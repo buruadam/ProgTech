@@ -12,6 +12,22 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class RegisterController {
+    public void setLast_nameField(TextField last_nameField) {
+        this.last_nameField = last_nameField;
+    }
+
+    public void setFirst_nameField(TextField first_nameField) {
+        this.first_nameField = first_nameField;
+    }
+
+    public void setEmailField(TextField emailField) {
+        this.emailField = emailField;
+    }
+
+    public void setPasswordField(PasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
     @FXML
     private TextField last_nameField;
 
@@ -24,10 +40,19 @@ public class RegisterController {
     @FXML
     private PasswordField passwordField;
 
+    public void setMessageLabel(Label messageLabel) {
+        this.messageLabel = messageLabel;
+    }
+
     @FXML
     private Label messageLabel;
 
     private RegisterDAO registerDAO;
+
+    public RegisterController(RegisterDAO mockRegisterDAO) {
+        registerDAO = new RegisterDAO();
+    }
+
 
     public RegisterController() { registerDAO = new RegisterDAO(); }
 
@@ -39,19 +64,25 @@ public class RegisterController {
 
         User user = new User(lastName, firstName, email, password);
 
-        try {
-            registerDAO.registerUser(user);
+        if (!lastName.isEmpty() && !firstName.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+            try {
+                registerDAO.registerUser(user);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));
-            Parent root = loader.load();
-            Scene newScene = new Scene(root);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));
+                Parent root = loader.load();
+                Scene newScene = new Scene(root);
 
-            Stage currentStage = (Stage) emailField.getScene().getWindow();
-            currentStage.setScene(newScene);
-            currentStage.setTitle("ÉtelrendelésAPP");
-            currentStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+                Stage currentStage = (Stage) emailField.getScene().getWindow();
+                currentStage.setScene(newScene);
+                currentStage.setTitle("ÉtelrendelésAPP");
+                currentStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            messageLabel.setText("Hiba a regisztráció során!");
+            messageLabel.setStyle("-fx-text-fill: red;");
         }
     }
 
