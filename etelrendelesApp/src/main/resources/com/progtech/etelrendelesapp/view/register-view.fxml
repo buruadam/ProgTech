@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import javafx.scene.control.PasswordField?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progtech.etelrendelesapp.controller.RegisterController">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <TextField fx:id="last_nameField" layoutX="225.0" layoutY="58.0" promptText="Vezetéknév"/>
+         <TextField fx:id="first_nameField" layoutX="225.0" layoutY="98.0" promptText="Keresztnév"/>
+         <TextField fx:id="emailField" layoutX="225.0" layoutY="136.0" promptText="Email"/>
+         <PasswordField fx:id="passwordField" layoutX="225.0" layoutY="174.0" promptText="Jelszó"/>
+         <Button layoutX="260.0" layoutY="238.0" mnemonicParsing="false" onAction="#handleRegister"
+                 text="Regisztráció"/>
+         <Button onAction="#navToLogin" text="Vissza a bejelentkezéshez"></Button>
+      </AnchorPane>
+   </center>
+</BorderPane>
