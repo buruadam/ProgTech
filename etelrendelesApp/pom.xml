@@ -133,7 +133,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.progtech.etelrendelesapp/com.progtech.etelrendelesapp.HelloApplication
+                            <mainClass>com.progtech.etelrendelesapp/com.progtech.etelrendelesapp.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

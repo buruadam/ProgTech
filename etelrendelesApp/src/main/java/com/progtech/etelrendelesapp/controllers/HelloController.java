@@ -1,4 +1,4 @@
-package com.progtech.etelrendelesapp;
+package com.progtech.etelrendelesapp.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

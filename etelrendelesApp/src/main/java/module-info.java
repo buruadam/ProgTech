@@ -10,7 +10,10 @@ module com.progtech.etelrendelesapp {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.sql;
 
     opens com.progtech.etelrendelesapp to javafx.fxml;
     exports com.progtech.etelrendelesapp;
+    exports com.progtech.etelrendelesapp.controllers;
+    opens com.progtech.etelrendelesapp.controllers to javafx.fxml;
 }
