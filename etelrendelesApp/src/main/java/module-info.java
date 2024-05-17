@@ -12,6 +12,7 @@ module com.progtech.etelrendelesapp {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires spring.security.crypto;
+    requires java.desktop;
 
     opens com.progtech.etelrendelesapp to javafx.fxml;
     exports com.progtech.etelrendelesapp;

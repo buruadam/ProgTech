@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="68.0" prefWidth="230.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="com.progtech.etelrendelesapp.controller.BalanceController">
+   <children>
+      <Button fx:id="button_addBalance" layoutX="154.0" layoutY="37.0" mnemonicParsing="false" onAction="#AddBalanceAction" text="Hozzáad" />
+      <TextField fx:id="tField_Balance" layoutX="14.0" layoutY="37.0" prefHeight="25.0" prefWidth="136.0" />
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="216.0" text="Hozzáadandó összeg (min 1500Ft): " />
+   </children>
+</AnchorPane>
