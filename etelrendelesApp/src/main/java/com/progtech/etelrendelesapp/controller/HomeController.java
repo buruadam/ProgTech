@@ -1,8 +1,9 @@
 package com.progtech.etelrendelesapp.controller;
 
 import com.progtech.etelrendelesapp.database.Database;
-import com.progtech.etelrendelesapp.model.MenuItem;
-import com.progtech.etelrendelesapp.model.User;
+import com.progtech.etelrendelesapp.model.*;
+import com.progtech.etelrendelesapp.model.Menu;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class HomeController {
 
@@ -55,20 +57,27 @@ public class HomeController {
     private Label lbl_price;
 
     @FXML
-    private TableView<MenuItem> tView_menu;
+    private TableView<Menu> tView_menu;
 
     @FXML
-    private TableColumn<MenuItem, String> col_name;
+    private TableColumn<Menu, String> col_name;
 
     @FXML
-    private TableColumn<MenuItem, Integer> col_price;
+    private TableColumn<Menu, Integer> col_price;
 
     @FXML
-    private TableView<?> tView_order;
+    private TableView<Menu> tView_order;
+
+    @FXML
+    private TableColumn<Menu, String> orderColName;
+
+    @FXML
+    private TableColumn<Menu, Integer> orderColPrice;
 
     @FXML
     private Label lbl_balance;
 
+    private ObservableList<Menu> orderList = FXCollections.observableArrayList();
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
@@ -78,9 +87,9 @@ public class HomeController {
 
     @FXML
     public void initialize() {
-            col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-            col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
-            col_price.setCellFactory(column -> new TableCell<MenuItem, Integer>() {
+        col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        col_price.setCellFactory(column -> new TableCell<Menu, Integer>() {
             @Override
             protected void updateItem(Integer item, boolean empty) {
                 super.updateItem(item, empty);
@@ -92,9 +101,25 @@ public class HomeController {
             }
         });
 
-            showFood();
+        orderColName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        orderColPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        orderColPrice.setCellFactory(column -> new TableCell<Menu, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item + " Ft");
+                }
+            }
+        });
 
+        tView_order.setItems(orderList);
+
+        showFood();
     }
+
 
     @FXML
     public void handleLogout(ActionEvent event) {
@@ -146,6 +171,7 @@ public class HomeController {
                 // insertOrder(getUserId(), price);
 
                 tView_order.getItems().clear();
+                lbl_price.setText("0");
                 showAlert(Alert.AlertType.INFORMATION, "Sikeres fizetés", "Sikeres megrendelés");
             } catch (NumberFormatException e) {
                 showAlert(Alert.AlertType.ERROR, "Hiba", "Az ár érvénytelen: " + e.getMessage());
@@ -154,12 +180,25 @@ public class HomeController {
     }
     @FXML
     public void showFood() {
-        if (menuController == null){
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült a betöltés");
-            return;
+
+        MenuDAO menuDAO = new MenuDAO();
+        List<Menu> foodList = menuDAO.getAllFood();
+
+        tView_menu.getItems().setAll(foodList);
+
+        /*
+        MenuDAO menuDAO = new MenuDAO();
+        List<Menu> foodList = menuDAO.getAllFood();
+
+        for (int i = 0; i < foodList.size(); i++) {
+            if (foodList.get(i).getName().equals("Hamburger")) {
+                Menu decoratedFood = new CheeseDecorator(new BaconDecorator(foodList.get(i)));
+                foodList.set(i, decoratedFood);
+            }
         }
-        ObservableList<MenuItem> foodItem = menuController.getFoodItem();
-        tView_menu.setItems(foodItem);
+        */
+
+        tView_menu.getItems().setAll(foodList);
     }
 
     @FXML
@@ -168,7 +207,7 @@ public class HomeController {
             showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült a betöltés");
             return;
         }
-        ObservableList<MenuItem> drinkItem = menuController.getDrinkItem();
+        ObservableList<Menu> drinkItem = menuController.getDrinkItem();
         tView_menu.setItems(drinkItem);
     }
 
@@ -198,5 +237,34 @@ public class HomeController {
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
+    }
+
+    @FXML
+    public void addToOrder() {
+        Menu selectedFood = tView_menu.getSelectionModel().getSelectedItem();
+        if (selectedFood != null) {
+            orderList.add(selectedFood);
+            tView_menu.getSelectionModel().clearSelection();
+            updateTotalPrice();
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
+        }
+    }
+
+    @FXML
+    public void RemoveFromOrder() {
+        Menu selectedFood = tView_order.getSelectionModel().getSelectedItem();
+        if (selectedFood != null) {
+            orderList.remove(selectedFood);
+            tView_order.getSelectionModel().clearSelection();
+            updateTotalPrice();
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
+        }
+    }
+
+    private void updateTotalPrice() {
+        int totalPrice = orderList.stream().mapToInt(Menu::getPrice).sum();
+        lbl_price.setText(String.valueOf(totalPrice));
     }
 }

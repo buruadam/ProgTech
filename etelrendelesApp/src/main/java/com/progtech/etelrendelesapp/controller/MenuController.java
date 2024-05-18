@@ -1,23 +1,29 @@
 package com.progtech.etelrendelesapp.controller;
 
-import com.progtech.etelrendelesapp.model.MenuItem;
+import com.progtech.etelrendelesapp.model.Menu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MenuController {
-    public ObservableList<MenuItem> getFoodItem() {
+    public ObservableList<Menu> getFoodItem() {
         return FXCollections.observableArrayList(
-                new MenuItem("Pizza", 1500),
-                new MenuItem("Hamburger", 1200),
-                new MenuItem("Saláta", 900)
+                /*
+                new Menu("Pizza", 1500),
+                new Menu("Hamburger", 1200),
+                new Menu("Saláta", 900)
+
+                 */
         );
     }
 
-    public ObservableList<MenuItem> getDrinkItem() {
+    public ObservableList<Menu> getDrinkItem() {
         return FXCollections.observableArrayList(
-                new MenuItem("Coca Cola", 500),
-                new MenuItem("Narancslé", 600),
-                new MenuItem("Víz", 300)
+                /*
+                new Menu("Coca Cola", 500),
+                new Menu("Narancslé", 600),
+                new Menu("Víz", 300)
+
+                 */
         );
     }
 }
