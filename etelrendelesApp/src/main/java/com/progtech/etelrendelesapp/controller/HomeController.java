@@ -180,35 +180,16 @@ public class HomeController {
     }
     @FXML
     public void showFood() {
-
         MenuDAO menuDAO = new MenuDAO();
         List<Menu> foodList = menuDAO.getAllFood();
-
-        tView_menu.getItems().setAll(foodList);
-
-        /*
-        MenuDAO menuDAO = new MenuDAO();
-        List<Menu> foodList = menuDAO.getAllFood();
-
-        for (int i = 0; i < foodList.size(); i++) {
-            if (foodList.get(i).getName().equals("Hamburger")) {
-                Menu decoratedFood = new CheeseDecorator(new BaconDecorator(foodList.get(i)));
-                foodList.set(i, decoratedFood);
-            }
-        }
-        */
-
         tView_menu.getItems().setAll(foodList);
     }
 
     @FXML
     public void showDrink() {
-        if (menuController == null){
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült a betöltés");
-            return;
-        }
-        ObservableList<Menu> drinkItem = menuController.getDrinkItem();
-        tView_menu.setItems(drinkItem);
+        MenuDAO menuDAO = new MenuDAO();
+        List<Menu> drinkList = menuDAO.getAllDrinks();
+        tView_menu.getItems().setAll(drinkList);
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String contentText){

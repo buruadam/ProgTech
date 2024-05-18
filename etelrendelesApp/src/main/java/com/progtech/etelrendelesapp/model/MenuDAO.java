@@ -36,7 +36,7 @@ public class MenuDAO {
         try (PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                drinkList.add(new BasicFood(rs.getString("name"), rs.getInt("price"))); // Feltételezve, hogy BasicFood is megfelelő az italokra
+                drinkList.add(new BasicFood(rs.getString("name"), rs.getInt("price")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
