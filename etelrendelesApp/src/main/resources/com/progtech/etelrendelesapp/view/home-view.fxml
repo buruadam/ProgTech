@@ -40,7 +40,7 @@
             </TableView>
             <Button fx:id="button_pay" layoutX="52.0" layoutY="361.0" mnemonicParsing="false" onAction="#handlePay" text="Fizetés" />
             <Label layoutX="14.0" layoutY="271.0" text="Összesen:" />
-            <Label fx:id="lbl_price" layoutX="78.0" layoutY="271.0" prefHeight="17.0" prefWidth="63.0" text="0" />
+            <Label fx:id="lbl_price" layoutX="78.0" layoutY="271.0" prefHeight="17.0" prefWidth="63.0" text="0 Ft" />
          </children>
       </AnchorPane>
    </children>

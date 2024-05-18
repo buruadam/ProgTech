@@ -160,24 +160,58 @@ public class HomeController {
 
     @FXML
     public void handlePay(ActionEvent event) {
-        String priceText = lbl_price.getText();
+        String priceText = lbl_price.getText().replace(" Ft", "");
         if (priceText.equals("0") || priceText.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Hiba", "Először vegye fel a rendelést");
         } else {
             try {
                 double price = Double.parseDouble(priceText);
 
-                // Az insertOrder metódus meghívása itt történik
-                // insertOrder(getUserId(), price);
+                if (currentUser.getBalance() < price) {
+                    showAlert(Alert.AlertType.ERROR,"Hiba", "Nincs elég pénzed");
+                    return;
+                }
+
+                int payedBalance = currentUser.getBalance() - (int) price;
+                updateBalanceInDatabase(payedBalance);
+                currentUser.setBalance(payedBalance);
+                lbl_balance.setText(payedBalance + " Ft");
+
+                insertOrder(currentUser.getEmail(), price);
 
                 tView_order.getItems().clear();
-                lbl_price.setText("0");
+                lbl_price.setText("0 Ft");
                 showAlert(Alert.AlertType.INFORMATION, "Sikeres fizetés", "Sikeres megrendelés");
             } catch (NumberFormatException e) {
                 showAlert(Alert.AlertType.ERROR, "Hiba", "Az ár érvénytelen: " + e.getMessage());
             }
         }
+
     }
+    private void updateBalanceInDatabase(int newBalance){
+        String sql = "UPDATE user SET balance = ? WHERE email = ?";
+        try (Connection connection = Database.ConnectToDatabase();
+            PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, newBalance);
+                pstmt.setString(2, currentUser.getEmail());
+                pstmt.executeUpdate();
+                lbl_balance.setText(newBalance + " Ft");
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+        }
+    }
+    private void insertOrder(String email, double price) {
+        String sql = "INSERT INTO orders (user_email, total_price) VALUES(?, ?)";
+        try (Connection connection = Database.ConnectToDatabase();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            pstmt.setDouble(2, price);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+        }
+    }
+
     @FXML
     public void showFood() {
         MenuDAO menuDAO = new MenuDAO();
@@ -211,7 +245,7 @@ public class HomeController {
             if (rs.next()) {
                 int balance = rs.getInt("balance");
                 currentUser.setBalance(balance);
-                lbl_balance.setText(String.valueOf(balance));
+                lbl_balance.setText(balance + " Ft");
             }else{
                 showAlert(Alert.AlertType.ERROR, "Hiba", "Nem található egyenleg");
             }
@@ -246,6 +280,6 @@ public class HomeController {
 
     private void updateTotalPrice() {
         int totalPrice = orderList.stream().mapToInt(Menu::getPrice).sum();
-        lbl_price.setText(String.valueOf(totalPrice));
+        lbl_price.setText(String.valueOf(totalPrice + " Ft"));
     }
 }
