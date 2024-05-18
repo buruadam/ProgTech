@@ -11,9 +11,19 @@
             <Button fx:id="button_balance" layoutX="5.0" layoutY="241.0" mnemonicParsing="false" onAction="#AddBalance" prefHeight="31.0" prefWidth="120.0" text="Összeg hozzáadás" />
             <Label layoutX="8.0" layoutY="285.0" prefHeight="17.0" prefWidth="46.0" text="Összeg:" />
             <Label fx:id="lbl_balance" layoutX="54.0" layoutY="285.0" prefHeight="17.0" prefWidth="63.0" text="0" />
+            <Button fx:id="button_food" layoutX="39.0" layoutY="139.0" mnemonicParsing="false" onAction="#showFood" text="Ételek" />
+            <Button fx:id="button_drink" layoutX="39.0" layoutY="188.0" mnemonicParsing="false" onAction="#showDrink" text="Italok" />
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="400.0" prefWidth="387.0" />
+      <AnchorPane prefHeight="400.0" prefWidth="387.0">
+         <children>
+            <TableView fx:id="tView_menu" layoutX="14.0" layoutY="14.0" prefHeight="372.0" prefWidth="292.0">
+              <columns>
+                <TableColumn fx:id="col_name" prefWidth="179.0" text="Termék neve" />
+                <TableColumn fx:id="col_price" prefWidth="112.0" text="Ár" />
+              </columns>
+            </TableView>
+         </children></AnchorPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <TableView fx:id="tView_order" prefHeight="244.0" prefWidth="156.0">
