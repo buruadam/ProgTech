@@ -57,6 +57,9 @@ public class LoginController {
                 Parent root = loader.load();
                 Scene newScene = new Scene(root);
 
+                HomeController homeController = loader.getController();
+                homeController.setCurrentUser(user);
+
                 Stage currentStage = (Stage) emailField.getScene().getWindow();
                 currentStage.setScene(newScene);
                 currentStage.setTitle("ÉtelrendelésAPP");
