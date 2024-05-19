@@ -16,11 +16,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <CheckBox fx:id="checkBox_cheese" mnemonicParsing="false" prefHeight="17.0" prefWidth="84.0" text="Sajt" />
-            <CheckBox fx:id="checkBox_bacon" mnemonicParsing="false" text="Bacon" GridPane.columnIndex="1" />
-            <CheckBox fx:id="checkBox_meal" mnemonicParsing="false" text="Hús" GridPane.rowIndex="1" />
-            <CheckBox fx:id="checkBox_onion" mnemonicParsing="false" text="Hagyma" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <CheckBox fx:id="checkBox_bbq" mnemonicParsing="false" text="BBQ" GridPane.rowIndex="2" />
+            <CheckBox fx:id="checkBox_toppingOne" mnemonicParsing="false" prefHeight="17.0" prefWidth="84.0" text="" />
+            <CheckBox fx:id="checkBox_toppingTwo" mnemonicParsing="false" text="" GridPane.columnIndex="1" />
+            <CheckBox fx:id="checkBox_toppingThree" mnemonicParsing="false" text="" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkBox_toppingFour" mnemonicParsing="false" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkBox_toppingFive" mnemonicParsing="false" text="" GridPane.rowIndex="2" />
             <RadioButton fx:id="radioButton_noTopping" mnemonicParsing="false" text="Nem kérek" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>

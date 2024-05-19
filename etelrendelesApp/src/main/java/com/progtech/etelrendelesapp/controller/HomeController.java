@@ -1,6 +1,8 @@
 package com.progtech.etelrendelesapp.controller;
 
 import com.progtech.etelrendelesapp.database.Database;
+import com.progtech.etelrendelesapp.factory.MenuFactory;
+import com.progtech.etelrendelesapp.factory.MenuFactorySelector;
 import com.progtech.etelrendelesapp.model.*;
 import com.progtech.etelrendelesapp.model.Menu;
 import javafx.collections.FXCollections;
@@ -259,28 +261,36 @@ public class HomeController {
 
     @FXML
     public void addToOrder() {
-        Menu selectedFood = tView_menu.getSelectionModel().getSelectedItem();
-        if (selectedFood != null) {
+        Menu selectedItem = tView_menu.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
             try {
-                int originalPrice = selectedFood.getPrice();
-                BasicFood selectedFoodCopy = new BasicFood(selectedFood.getName(), selectedFood.getPrice());
+                int originalPrice = selectedItem.getPrice();
+
+                MenuFactory factory;
                 if (isFoodSelected){
+                    String foodType = selectedItem.getName().toLowerCase();
+                    if (foodType.contains("pizza"))
+                        factory = MenuFactorySelector.getFactory("pizza");
+                    else if (foodType.contains("hamburger"))
+                        factory = MenuFactorySelector.getFactory("hamburger");
+                    else {
+                        showAlert(Alert.AlertType.ERROR,"Hiba", "Ismeretlen étel típus");
+                        return;
+                    }
+                }
+                else
+                    factory = MenuFactorySelector.getFactory("drink");
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/topping-view.fxml"));
-                    Parent root = loader.load();
-                    ToppingController toppingController = loader.getController();
-                    toppingController.setMenu(selectedFoodCopy);
+                Menu selectedItemCopy = factory.createMenu(selectedItem.getName());
 
-                    Stage stage = new Stage();
-                    stage.setTitle("Válassz feltétet");
-                    stage.setScene(new Scene(root));
-                    stage.showAndWait();
+                if (isFoodSelected){
+                    openToppingWindow(selectedItemCopy);
                 }
 
-                orderList.add(selectedFoodCopy);
+                orderList.add(selectedItemCopy);
                 tView_menu.getSelectionModel().clearSelection();
                 updateTotalPrice();
-                selectedFood.setPrice(originalPrice);
+                selectedItem.setPrice(originalPrice);
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -288,15 +298,23 @@ public class HomeController {
             showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
         }
     }
-    public boolean isFood(String name) {
-        return !name.toLowerCase().contains("drink");
+    private void openToppingWindow(Menu menu) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/topping-view.fxml"));
+        Parent root = loader.load();
+        ToppingController toppingController = loader.getController();
+        toppingController.setMenu(menu);
+
+        Stage stage = new Stage();
+        stage.setTitle("Válassz feltétet");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML
     public void RemoveFromOrder() {
-        Menu selectedFood = tView_order.getSelectionModel().getSelectedItem();
-        if (selectedFood != null) {
-            orderList.remove(selectedFood);
+        Menu selectedItem = tView_order.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            orderList.remove(selectedItem);
             tView_order.getSelectionModel().clearSelection();
             updateTotalPrice();
         } else {

@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class HamburgerFactory implements MenuFactory{
+public class HamburgerFactory extends MenuFactory{
     @Override
     public Menu createMenu(String name){
         String query = "SELECT * FROM food WHERE name = ?";
