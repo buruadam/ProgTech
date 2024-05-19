@@ -29,6 +29,7 @@ public class HomeController {
 
     private User currentUser;
     private MenuController menuController;
+    private boolean isFoodSelected = true;
 
     public HomeController() {
         this.menuController = new MenuController();
@@ -214,6 +215,7 @@ public class HomeController {
 
     @FXML
     public void showFood() {
+        isFoodSelected = true;
         MenuDAO menuDAO = new MenuDAO();
         List<Menu> foodList = menuDAO.getAllFood();
         tView_menu.getItems().setAll(foodList);
@@ -221,6 +223,7 @@ public class HomeController {
 
     @FXML
     public void showDrink() {
+        isFoodSelected = false;
         MenuDAO menuDAO = new MenuDAO();
         List<Menu> drinkList = menuDAO.getAllDrinks();
         tView_menu.getItems().setAll(drinkList);
@@ -258,12 +261,35 @@ public class HomeController {
     public void addToOrder() {
         Menu selectedFood = tView_menu.getSelectionModel().getSelectedItem();
         if (selectedFood != null) {
-            orderList.add(selectedFood);
-            tView_menu.getSelectionModel().clearSelection();
-            updateTotalPrice();
+            try {
+                int originalPrice = selectedFood.getPrice();
+                BasicFood selectedFoodCopy = new BasicFood(selectedFood.getName(), selectedFood.getPrice());
+                if (isFoodSelected){
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/topping-view.fxml"));
+                    Parent root = loader.load();
+                    ToppingController toppingController = loader.getController();
+                    toppingController.setMenu(selectedFoodCopy);
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Válassz feltétet");
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
+                }
+
+                orderList.add(selectedFoodCopy);
+                tView_menu.getSelectionModel().clearSelection();
+                updateTotalPrice();
+                selectedFood.setPrice(originalPrice);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         } else {
             showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
         }
+    }
+    public boolean isFood(String name) {
+        return !name.toLowerCase().contains("drink");
     }
 
     @FXML
@@ -280,6 +306,6 @@ public class HomeController {
 
     private void updateTotalPrice() {
         int totalPrice = orderList.stream().mapToInt(Menu::getPrice).sum();
-        lbl_price.setText(String.valueOf(totalPrice + " Ft"));
+        lbl_price.setText(totalPrice + " Ft");
     }
 }
