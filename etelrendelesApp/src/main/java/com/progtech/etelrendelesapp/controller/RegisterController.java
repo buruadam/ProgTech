@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class RegisterController {
     public void setLast_nameField(TextField last_nameField) {
@@ -49,12 +50,15 @@ public class RegisterController {
 
     private RegisterDAO registerDAO;
 
-    public RegisterController(RegisterDAO mockRegisterDAO) {
-        registerDAO = new RegisterDAO();
+    public RegisterController(RegisterDAO mockRegisterDAO)
+    {
+        registerDAO =  new RegisterDAO();
     }
 
 
-    public RegisterController() { registerDAO = new RegisterDAO(); }
+    public RegisterController() {
+        registerDAO = new RegisterDAO();
+    }
 
     public void handleRegister() {
         String lastName = last_nameField.getText();
@@ -62,28 +66,58 @@ public class RegisterController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        User user = new User(lastName, firstName, email, password);
-
         if (!lastName.isEmpty() && !firstName.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-            try {
-                registerDAO.registerUser(user);
+            if(isEmailValid(email) && isPasswordValid(password)){
+                try {
+                    if (!registerDAO.emailExists(email)){
+                        User user = new User(lastName, firstName, email, password);
+                        try {
+                            registerDAO.registerUser(user);
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));
+                            Parent root = loader.load();
+                            Scene newScene = new Scene(root);
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));
-                Parent root = loader.load();
-                Scene newScene = new Scene(root);
+                            Stage currentStage = (Stage) emailField.getScene().getWindow();
+                            currentStage.setScene(newScene);
+                            currentStage.setTitle("ÉtelrendelésAPP");
+                            currentStage.show();
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        messageLabel.setText("Az email már létezik!");
+                        messageLabel.setStyle("-fx-text-fill: red;");
 
-                Stage currentStage = (Stage) emailField.getScene().getWindow();
-                currentStage.setScene(newScene);
-                currentStage.setTitle("ÉtelrendelésAPP");
-                currentStage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    }
+                }catch (SQLException e){
+                    e.printStackTrace();
+                    messageLabel.setText("Hiba a regisztráció során!");
+                    messageLabel.setStyle("-fx-text-fill: red;");
+                }
             }
-        }
-        else {
-            messageLabel.setText("Hiba a regisztráció során!");
+            else{
+                if(!isEmailValid(email)){
+                    messageLabel.setText("Az email cím nem megfelelő!");
+                    messageLabel.setStyle("-fx-text-fill: red;");
+                }else {
+                    messageLabel.setText("A jelszó nem megfelelő!");
+                    messageLabel.setStyle("-fx-text-fill: red;");
+                }
+            }
+        } else{
+            messageLabel.setText("Minden mezőt ki kell tölteni!");
             messageLabel.setStyle("-fx-text-fill: red;");
         }
+    }
+    private boolean isPasswordValid(String password){
+        if (password.length() < 8) return false;
+        if (!password.matches(".*[A-Z].*")) return false;
+        if (!password.matches(".*\\d.*")) return false;
+        return true;
+    }
+    private boolean isEmailValid(String email){
+        return email.contains("@");
     }
 
     public void navToLogin() {

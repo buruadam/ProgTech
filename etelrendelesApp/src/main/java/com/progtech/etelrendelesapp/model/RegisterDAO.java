@@ -31,4 +31,16 @@ public class RegisterDAO {
         }
     }
 
+    public boolean emailExists(String email) throws SQLException{
+        PreparedStatement stmt = connection.prepareStatement(
+                "SELECT email FROM user WHERE email = ?"
+        );
+        stmt.setString(1, email);
+        ResultSet rs = stmt.executeQuery();
+        boolean exists = rs.next();
+        rs.close();
+        stmt.close();
+        return exists;
+    }
+
 }

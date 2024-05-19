@@ -274,7 +274,7 @@ public class HomeController {
             tView_order.getSelectionModel().clearSelection();
             updateTotalPrice();
         } else {
-            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
+            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket az eltávolításhoz");
         }
     }
 
