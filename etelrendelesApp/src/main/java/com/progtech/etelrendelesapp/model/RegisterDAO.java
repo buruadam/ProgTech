@@ -12,6 +12,10 @@ public class RegisterDAO {
         this.connection = Database.ConnectToDatabase();
     }
 
+    public RegisterDAO(Connection connection) {
+        this.connection = connection;
+    }
+
     public void registerUser(User user) {
         try {
             String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
