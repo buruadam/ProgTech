@@ -1,6 +1,10 @@
 package com.progtech.etelrendelesapp.controller;
 
 import com.progtech.etelrendelesapp.database.Database;
+import com.progtech.etelrendelesapp.factory.MenuFactory;
+import com.progtech.etelrendelesapp.factory.MenuFactorySelector;
+import com.progtech.etelrendelesapp.helper.AlertHelper;
+import com.progtech.etelrendelesapp.logger.AppLogger;
 import com.progtech.etelrendelesapp.model.*;
 import com.progtech.etelrendelesapp.model.Menu;
 import javafx.collections.FXCollections;
@@ -24,11 +28,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 
 public class HomeController {
 
     private User currentUser;
+    private HomeDAO homeDAO = new HomeDAO();
     private MenuController menuController;
+    private boolean isFoodSelected = true;
 
     public HomeController() {
         this.menuController = new MenuController();
@@ -123,6 +130,7 @@ public class HomeController {
 
     @FXML
     public void handleLogout(ActionEvent event) {
+        AppLogger.log(Level.INFO, "Kijelentkezett: " + currentUser.getEmail());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));
             Parent root = loader.load();
@@ -154,7 +162,7 @@ public class HomeController {
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült betölteni az összeadás nézetet: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült betölteni az összeadás nézetet: " + e.getMessage());
         }
     }
 
@@ -162,13 +170,13 @@ public class HomeController {
     public void handlePay(ActionEvent event) {
         String priceText = lbl_price.getText().replace(" Ft", "");
         if (priceText.equals("0") || priceText.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Először vegye fel a rendelést");
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Először vegye fel a rendelést");
         } else {
             try {
                 double price = Double.parseDouble(priceText);
 
                 if (currentUser.getBalance() < price) {
-                    showAlert(Alert.AlertType.ERROR,"Hiba", "Nincs elég pénzed");
+                    AlertHelper.showAlert(Alert.AlertType.ERROR,"Hiba", "Nincs elég pénzed");
                     return;
                 }
 
@@ -178,42 +186,36 @@ public class HomeController {
                 lbl_balance.setText(payedBalance + " Ft");
 
                 insertOrder(currentUser.getEmail(), price);
+                AppLogger.log(Level.INFO, "Rendelés leadva: " + currentUser.getEmail() + ", " + price + " Ft");
 
                 tView_order.getItems().clear();
                 lbl_price.setText("0 Ft");
-                showAlert(Alert.AlertType.INFORMATION, "Sikeres fizetés", "Sikeres megrendelés");
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Sikeres fizetés", "Sikeres megrendelés");
             } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Hiba", "Az ár érvénytelen: " + e.getMessage());
+                AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Az ár érvénytelen: " + e.getMessage());
             }
         }
 
     }
     private void updateBalanceInDatabase(int newBalance){
-        String sql = "UPDATE user SET balance = ? WHERE email = ?";
-        try (Connection connection = Database.ConnectToDatabase();
-            PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setInt(1, newBalance);
-                pstmt.setString(2, currentUser.getEmail());
-                pstmt.executeUpdate();
-                lbl_balance.setText(newBalance + " Ft");
+        try {
+            homeDAO.updateBalanceInDatabase(currentUser.getEmail(),newBalance);
+            lbl_balance.setText(newBalance + " Ft");
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
     }
     private void insertOrder(String email, double price) {
-        String sql = "INSERT INTO orders (user_email, total_price) VALUES(?, ?)";
-        try (Connection connection = Database.ConnectToDatabase();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, email);
-            pstmt.setDouble(2, price);
-            pstmt.executeUpdate();
+        try{
+            homeDAO.insertOrder(email,price);
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
     }
 
     @FXML
     public void showFood() {
+        isFoodSelected = true;
         MenuDAO menuDAO = new MenuDAO();
         List<Menu> foodList = menuDAO.getAllFood();
         tView_menu.getItems().setAll(foodList);
@@ -221,65 +223,97 @@ public class HomeController {
 
     @FXML
     public void showDrink() {
+        isFoodSelected = false;
         MenuDAO menuDAO = new MenuDAO();
         List<Menu> drinkList = menuDAO.getAllDrinks();
         tView_menu.getItems().setAll(drinkList);
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String contentText){
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(contentText);
-        alert.showAndWait();
-    }
-
     public void loadBalanceFromDatabase() {
-        if (currentUser == null)
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Felhasználó nem elérhető");
-        String sql = "SELECT balance FROM user WHERE email = ?";
-        try (Connection conn = Database.ConnectToDatabase();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, currentUser.getEmail());
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                int balance = rs.getInt("balance");
+        if (currentUser == null) {
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Felhasználó nem elérhető");
+            return;
+        }
+        try {
+            Integer balance = homeDAO.loadBalanceFromDatabase(currentUser.getEmail());
+            if (balance != null) {
                 currentUser.setBalance(balance);
                 lbl_balance.setText(balance + " Ft");
             }else{
-                showAlert(Alert.AlertType.ERROR, "Hiba", "Nem található egyenleg");
+                AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Nem található egyenleg");
             }
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
     }
 
     @FXML
     public void addToOrder() {
-        Menu selectedFood = tView_menu.getSelectionModel().getSelectedItem();
-        if (selectedFood != null) {
-            orderList.add(selectedFood);
-            tView_menu.getSelectionModel().clearSelection();
-            updateTotalPrice();
+        Menu selectedItem = tView_menu.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            try {
+                int originalPrice = selectedItem.getPrice();
+
+                MenuFactory factory;
+                if (isFoodSelected){
+                    String foodType = selectedItem.getName().toLowerCase();
+                    if (foodType.contains("pizza"))
+                        factory = MenuFactorySelector.getFactory("pizza");
+                    else if (foodType.contains("hamburger"))
+                        factory = MenuFactorySelector.getFactory("hamburger");
+                    else {
+                        AlertHelper.showAlert(Alert.AlertType.ERROR,"Hiba", "Ismeretlen étel típus");
+                        return;
+                    }
+                }
+                else
+                    factory = MenuFactorySelector.getFactory("drink");
+
+                Menu selectedItemCopy = factory.createMenu(selectedItem.getName());
+
+                if (isFoodSelected){
+                    openToppingWindow(selectedItemCopy);
+                }
+
+                orderList.add(selectedItemCopy);
+                AppLogger.log(Level.INFO, "Rendeléshez hozzáadva: " + selectedItemCopy.getName() + ", " + selectedItemCopy.getPrice() + " Ft");
+                tView_menu.getSelectionModel().clearSelection();
+                updateTotalPrice();
+                selectedItem.setPrice(originalPrice);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         } else {
-            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
+            AlertHelper.showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
         }
+    }
+    private void openToppingWindow(Menu menu) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/topping-view.fxml"));
+        Parent root = loader.load();
+        ToppingController toppingController = loader.getController();
+        toppingController.setMenu(menu);
+
+        Stage stage = new Stage();
+        stage.setTitle("Válassz feltétet");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML
     public void RemoveFromOrder() {
-        Menu selectedFood = tView_order.getSelectionModel().getSelectedItem();
-        if (selectedFood != null) {
-            orderList.remove(selectedFood);
+        Menu selectedItem = tView_order.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            orderList.remove(selectedItem);
+            AppLogger.log(Level.INFO, "Eltávolítva a rendelésről: " + selectedItem.getName() + ", " + selectedItem.getPrice() + " Ft");
             tView_order.getSelectionModel().clearSelection();
             updateTotalPrice();
         } else {
-            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket az eltávolításhoz");
+            AlertHelper.showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket az eltávolításhoz");
         }
     }
 
     private void updateTotalPrice() {
         int totalPrice = orderList.stream().mapToInt(Menu::getPrice).sum();
-        lbl_price.setText(String.valueOf(totalPrice + " Ft"));
+        lbl_price.setText(totalPrice + " Ft");
     }
 }

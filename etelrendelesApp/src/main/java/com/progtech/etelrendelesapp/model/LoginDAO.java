@@ -12,6 +12,10 @@ public class LoginDAO {
         this.connection = Database.ConnectToDatabase();
     }
 
+    public LoginDAO(Connection connection) {
+        this.connection = connection;
+    }
+
     public boolean authenticate(User user) {
         String query = "SELECT password FROM user WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
