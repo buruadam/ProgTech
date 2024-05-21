@@ -3,6 +3,7 @@ package com.progtech.etelrendelesapp.controller;
 import com.progtech.etelrendelesapp.database.Database;
 import com.progtech.etelrendelesapp.factory.MenuFactory;
 import com.progtech.etelrendelesapp.factory.MenuFactorySelector;
+import com.progtech.etelrendelesapp.helper.AlertHelper;
 import com.progtech.etelrendelesapp.model.*;
 import com.progtech.etelrendelesapp.model.Menu;
 import javafx.collections.FXCollections;
@@ -157,7 +158,7 @@ public class HomeController {
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült betölteni az összeadás nézetet: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült betölteni az összeadás nézetet: " + e.getMessage());
         }
     }
 
@@ -165,13 +166,13 @@ public class HomeController {
     public void handlePay(ActionEvent event) {
         String priceText = lbl_price.getText().replace(" Ft", "");
         if (priceText.equals("0") || priceText.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Először vegye fel a rendelést");
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Először vegye fel a rendelést");
         } else {
             try {
                 double price = Double.parseDouble(priceText);
 
                 if (currentUser.getBalance() < price) {
-                    showAlert(Alert.AlertType.ERROR,"Hiba", "Nincs elég pénzed");
+                    AlertHelper.showAlert(Alert.AlertType.ERROR,"Hiba", "Nincs elég pénzed");
                     return;
                 }
 
@@ -184,9 +185,9 @@ public class HomeController {
 
                 tView_order.getItems().clear();
                 lbl_price.setText("0 Ft");
-                showAlert(Alert.AlertType.INFORMATION, "Sikeres fizetés", "Sikeres megrendelés");
+                AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Sikeres fizetés", "Sikeres megrendelés");
             } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Hiba", "Az ár érvénytelen: " + e.getMessage());
+                AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Az ár érvénytelen: " + e.getMessage());
             }
         }
 
@@ -200,7 +201,7 @@ public class HomeController {
                 pstmt.executeUpdate();
                 lbl_balance.setText(newBalance + " Ft");
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
     }
     private void insertOrder(String email, double price) {
@@ -211,7 +212,7 @@ public class HomeController {
             pstmt.setDouble(2, price);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
     }
 
@@ -231,17 +232,9 @@ public class HomeController {
         tView_menu.getItems().setAll(drinkList);
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String contentText){
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(contentText);
-        alert.showAndWait();
-    }
-
     public void loadBalanceFromDatabase() {
         if (currentUser == null)
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Felhasználó nem elérhető");
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Felhasználó nem elérhető");
         String sql = "SELECT balance FROM user WHERE email = ?";
         try (Connection conn = Database.ConnectToDatabase();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -252,10 +245,10 @@ public class HomeController {
                 currentUser.setBalance(balance);
                 lbl_balance.setText(balance + " Ft");
             }else{
-                showAlert(Alert.AlertType.ERROR, "Hiba", "Nem található egyenleg");
+                AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Nem található egyenleg");
             }
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
     }
 
@@ -274,7 +267,7 @@ public class HomeController {
                     else if (foodType.contains("hamburger"))
                         factory = MenuFactorySelector.getFactory("hamburger");
                     else {
-                        showAlert(Alert.AlertType.ERROR,"Hiba", "Ismeretlen étel típus");
+                        AlertHelper.showAlert(Alert.AlertType.ERROR,"Hiba", "Ismeretlen étel típus");
                         return;
                     }
                 }
@@ -295,7 +288,7 @@ public class HomeController {
                 e.printStackTrace();
             }
         } else {
-            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
+            AlertHelper.showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket a hozzáadáshoz");
         }
     }
     private void openToppingWindow(Menu menu) throws IOException{
@@ -318,7 +311,7 @@ public class HomeController {
             tView_order.getSelectionModel().clearSelection();
             updateTotalPrice();
         } else {
-            showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket az eltávolításhoz");
+            AlertHelper.showAlert(Alert.AlertType.WARNING, "Figyelem", "Válasszon ki egy terméket az eltávolításhoz");
         }
     }
 

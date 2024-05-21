@@ -1,6 +1,7 @@
 package com.progtech.etelrendelesapp.controller;
 
 import com.progtech.etelrendelesapp.database.Database;
+import com.progtech.etelrendelesapp.helper.AlertHelper;
 import com.progtech.etelrendelesapp.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -32,7 +33,7 @@ public class BalanceController {
     @FXML
     public void AddBalanceAction(ActionEvent event) {
         if (currentUser == null) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "A felhasználói információ nem érhető el.");
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "A felhasználói információ nem érhető el.");
             return;
         }
 
@@ -40,11 +41,11 @@ public class BalanceController {
             int osszeg = Integer.parseInt(tField_Balance.getText());
 
             if (osszeg < 0) {
-                showAlert(Alert.AlertType.ERROR,"Hiba", "Az összeg nem lehet negatív");
+                AlertHelper.showAlert(Alert.AlertType.ERROR,"Hiba", "Az összeg nem lehet negatív");
                 return;
             }
             if (osszeg < 1500) {
-                showAlert(Alert.AlertType.ERROR, "Hiba", "Minimum 1500-at kell feltölteni");
+                AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Minimum 1500-at kell feltölteni");
                 return;
             }
 
@@ -55,13 +56,13 @@ public class BalanceController {
                 homeController.loadBalanceFromDatabase();
             }
 
-            showAlert(Alert.AlertType.INFORMATION, "Siker", "Egyenleg sikeresen frissítve.");
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Siker", "Egyenleg sikeresen frissítve.");
 
             Stage stage = (Stage) tField_Balance.getScene().getWindow();
             stage.close();
 
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Érvényes számot adjon meg.");
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Érvényes számot adjon meg.");
         }
     }
 
@@ -73,15 +74,7 @@ public class BalanceController {
             pstmt.setString(2, currentUser.getEmail());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
+            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
-    }
-
-    private void showAlert(Alert.AlertType alertType, String title, String contentText){
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(contentText);
-        alert.showAndWait();
     }
 }
