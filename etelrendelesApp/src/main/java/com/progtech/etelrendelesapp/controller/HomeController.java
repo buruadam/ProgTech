@@ -4,6 +4,7 @@ import com.progtech.etelrendelesapp.database.Database;
 import com.progtech.etelrendelesapp.factory.MenuFactory;
 import com.progtech.etelrendelesapp.factory.MenuFactorySelector;
 import com.progtech.etelrendelesapp.helper.AlertHelper;
+import com.progtech.etelrendelesapp.logger.AppLogger;
 import com.progtech.etelrendelesapp.model.*;
 import com.progtech.etelrendelesapp.model.Menu;
 import javafx.collections.FXCollections;
@@ -27,6 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 
 public class HomeController {
 
@@ -128,6 +130,7 @@ public class HomeController {
 
     @FXML
     public void handleLogout(ActionEvent event) {
+        AppLogger.log(Level.INFO, "Kijelentkezett: " + currentUser.getEmail());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));
             Parent root = loader.load();
@@ -183,6 +186,7 @@ public class HomeController {
                 lbl_balance.setText(payedBalance + " Ft");
 
                 insertOrder(currentUser.getEmail(), price);
+                AppLogger.log(Level.INFO, "Rendelés leadva: " + currentUser.getEmail() + ", " + price + " Ft");
 
                 tView_order.getItems().clear();
                 lbl_price.setText("0 Ft");
@@ -272,6 +276,7 @@ public class HomeController {
                 }
 
                 orderList.add(selectedItemCopy);
+                AppLogger.log(Level.INFO, "Rendeléshez hozzáadva: " + selectedItemCopy.getName() + ", " + selectedItemCopy.getPrice() + " Ft");
                 tView_menu.getSelectionModel().clearSelection();
                 updateTotalPrice();
                 selectedItem.setPrice(originalPrice);
@@ -299,6 +304,7 @@ public class HomeController {
         Menu selectedItem = tView_order.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             orderList.remove(selectedItem);
+            AppLogger.log(Level.INFO, "Eltávolítva a rendelésről: " + selectedItem.getName() + ", " + selectedItem.getPrice() + " Ft");
             tView_order.getSelectionModel().clearSelection();
             updateTotalPrice();
         } else {

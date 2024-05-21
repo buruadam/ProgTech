@@ -2,6 +2,7 @@ package com.progtech.etelrendelesapp.controller;
 
 import com.progtech.etelrendelesapp.database.Database;
 import com.progtech.etelrendelesapp.helper.AlertHelper;
+import com.progtech.etelrendelesapp.logger.AppLogger;
 import com.progtech.etelrendelesapp.model.BalanceDAO;
 import com.progtech.etelrendelesapp.model.User;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 public class BalanceController {
 
@@ -54,6 +56,7 @@ public class BalanceController {
 
             int newBalance = currentUser.getBalance() + osszeg;
             balanceDAO.updateBalanceInDatabase(currentUser, newBalance);
+            AppLogger.log(Level.INFO, "Összeg hozzáadva " + osszeg + " Ft felhasználó számára: " + currentUser.getEmail());
             currentUser.setBalance(newBalance);
             if (homeController != null){
                 homeController.loadBalanceFromDatabase();
@@ -65,6 +68,7 @@ public class BalanceController {
             stage.close();
 
         } catch (NumberFormatException e) {
+            AppLogger.log(Level.SEVERE, "Hibás számformátum egyenleg feltöltésnél: " + e.getMessage());
             AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Érvényes számot adjon meg.");
         } catch (SQLException e){
             AlertHelper.showAlert(Alert.AlertType.ERROR,"Hiba", "Adatbázis hiba: " +e.getMessage());

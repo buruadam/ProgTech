@@ -1,5 +1,6 @@
 package com.progtech.etelrendelesapp.controller;
 
+import com.progtech.etelrendelesapp.logger.AppLogger;
 import com.progtech.etelrendelesapp.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import com.progtech.etelrendelesapp.model.LoginDAO;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class LoginController {
     public void setEmailField(TextField emailField) {
@@ -51,6 +53,7 @@ public class LoginController {
         boolean isAuthenticated = loginDAO.authenticate(user);
 
         if (isAuthenticated) {
+            AppLogger.log(Level.INFO, "Sikeres bejelentkezés: " + email);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/home-view.fxml"));
@@ -68,6 +71,7 @@ public class LoginController {
                 e.printStackTrace();
             }
         } else {
+            AppLogger.log(Level.WARNING, "Sikertelen bejelentkezés: " + email);
             messageLabel.setText("Helytelen felhasználónév vagy jelszó");
             messageLabel.setStyle("-fx-text-fill: red;");
         }
