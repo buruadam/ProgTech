@@ -31,6 +31,7 @@ import java.util.List;
 public class HomeController {
 
     private User currentUser;
+    private HomeDAO homeDAO = new HomeDAO();
     private MenuController menuController;
     private boolean isFoodSelected = true;
 
@@ -193,24 +194,16 @@ public class HomeController {
 
     }
     private void updateBalanceInDatabase(int newBalance){
-        String sql = "UPDATE user SET balance = ? WHERE email = ?";
-        try (Connection connection = Database.ConnectToDatabase();
-            PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setInt(1, newBalance);
-                pstmt.setString(2, currentUser.getEmail());
-                pstmt.executeUpdate();
-                lbl_balance.setText(newBalance + " Ft");
+        try {
+            homeDAO.updateBalanceInDatabase(currentUser.getEmail(),newBalance);
+            lbl_balance.setText(newBalance + " Ft");
         } catch (SQLException e) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
     }
     private void insertOrder(String email, double price) {
-        String sql = "INSERT INTO orders (user_email, total_price) VALUES(?, ?)";
-        try (Connection connection = Database.ConnectToDatabase();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, email);
-            pstmt.setDouble(2, price);
-            pstmt.executeUpdate();
+        try{
+            homeDAO.insertOrder(email,price);
         } catch (SQLException e) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
         }
@@ -233,15 +226,13 @@ public class HomeController {
     }
 
     public void loadBalanceFromDatabase() {
-        if (currentUser == null)
+        if (currentUser == null) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Felhasználó nem elérhető");
-        String sql = "SELECT balance FROM user WHERE email = ?";
-        try (Connection conn = Database.ConnectToDatabase();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, currentUser.getEmail());
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                int balance = rs.getInt("balance");
+            return;
+        }
+        try {
+            Integer balance = homeDAO.loadBalanceFromDatabase(currentUser.getEmail());
+            if (balance != null) {
                 currentUser.setBalance(balance);
                 lbl_balance.setText(balance + " Ft");
             }else{

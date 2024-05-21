@@ -2,6 +2,7 @@ package com.progtech.etelrendelesapp.controller;
 
 import com.progtech.etelrendelesapp.database.Database;
 import com.progtech.etelrendelesapp.helper.AlertHelper;
+import com.progtech.etelrendelesapp.model.BalanceDAO;
 import com.progtech.etelrendelesapp.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,6 +22,8 @@ public class BalanceController {
     private User currentUser;
 
     private HomeController homeController;
+
+    private BalanceDAO balanceDAO = new BalanceDAO();
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
@@ -50,7 +53,7 @@ public class BalanceController {
             }
 
             int newBalance = currentUser.getBalance() + osszeg;
-            updateBalanceInDatabase(newBalance);
+            balanceDAO.updateBalanceInDatabase(currentUser, newBalance);
             currentUser.setBalance(newBalance);
             if (homeController != null){
                 homeController.loadBalanceFromDatabase();
@@ -63,18 +66,10 @@ public class BalanceController {
 
         } catch (NumberFormatException e) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Érvényes számot adjon meg.");
+        } catch (SQLException e){
+            AlertHelper.showAlert(Alert.AlertType.ERROR,"Hiba", "Adatbázis hiba: " +e.getMessage());
         }
     }
 
-    private void updateBalanceInDatabase(int newBalance) {
-        String sql = "UPDATE user SET balance = ? WHERE email = ?";
-        try (Connection conn = Database.ConnectToDatabase();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, newBalance);
-            pstmt.setString(2, currentUser.getEmail());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Adatbázis hiba: " + e.getMessage());
-        }
-    }
+
 }

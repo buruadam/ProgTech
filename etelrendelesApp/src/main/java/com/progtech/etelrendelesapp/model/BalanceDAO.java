@@ -1,0 +1,23 @@
+package com.progtech.etelrendelesapp.model;
+
+import com.progtech.etelrendelesapp.model.User;
+import com.progtech.etelrendelesapp.controller.BalanceController;
+import com.progtech.etelrendelesapp.database.Database;
+import com.progtech.etelrendelesapp.helper.AlertHelper;
+import javafx.scene.control.Alert;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class BalanceDAO {
+    public void updateBalanceInDatabase(User user, int newBalance) throws SQLException {
+        String sql = "UPDATE user SET balance = ? WHERE email = ?";
+        try (Connection conn = Database.ConnectToDatabase();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, newBalance);
+            pstmt.setString(2, user.getEmail());
+            pstmt.executeUpdate();
+        }
+    }
+}
