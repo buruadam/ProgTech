@@ -12,6 +12,13 @@ import java.util.List;
 public class MenuDAO {
     private Connection connection;
 
+    public Connection getConnection() {
+        return connection;
+    }
+    public MenuDAO(Connection connection) {
+        this.connection = connection;
+    }
+
     public MenuDAO() {
         this.connection = Database.ConnectToDatabase();
     }

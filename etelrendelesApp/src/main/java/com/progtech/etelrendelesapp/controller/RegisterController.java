@@ -1,5 +1,6 @@
 package com.progtech.etelrendelesapp.controller;
 
+import com.progtech.etelrendelesapp.logger.AppLogger;
 import com.progtech.etelrendelesapp.model.RegisterDAO;
 import com.progtech.etelrendelesapp.model.User;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 public class RegisterController {
     public void setLast_nameField(TextField last_nameField) {
@@ -71,6 +73,7 @@ public class RegisterController {
                 try {
                     if (!registerDAO.emailExists(email)){
                         User user = new User(lastName, firstName, email, password);
+                        AppLogger.log(Level.INFO, "Sikeres regisztráció: " + email);
                         try {
                             registerDAO.registerUser(user);
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));

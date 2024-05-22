@@ -40,3 +40,5 @@ máj. 22, 2024 11:02:12 DE. com.progtech.etelrendelesapp.logger.AppLogger log
 INFO: Kijelentkezett: user@user
 máj. 22, 2024 11:02:17 DE. com.progtech.etelrendelesapp.logger.AppLogger log
 INFO: Sikeres bejelentkezés: user@user
+máj. 22, 2024 11:23:20 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres regisztráció: testuser@gmail.com
