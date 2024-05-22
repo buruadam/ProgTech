@@ -11,10 +11,19 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class BalanceDAO {
+    private Connection connection;
+
+    public BalanceDAO() {
+        this.connection = Database.ConnectToDatabase();
+    }
+
+    public BalanceDAO(Connection connection) {
+        this.connection = connection;
+    }
+
     public void updateBalanceInDatabase(User user, int newBalance) throws SQLException {
         String sql = "UPDATE user SET balance = ? WHERE email = ?";
-        try (Connection conn = Database.ConnectToDatabase();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, newBalance);
             pstmt.setString(2, user.getEmail());
             pstmt.executeUpdate();

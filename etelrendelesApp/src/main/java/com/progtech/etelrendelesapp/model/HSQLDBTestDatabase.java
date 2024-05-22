@@ -21,13 +21,15 @@ public class HSQLDBTestDatabase {
                     "first_name VARCHAR(255), " +
                     "last_name VARCHAR(255), " +
                     "email VARCHAR(255) UNIQUE, " +
-                    "password VARCHAR(255))");
+                    "password VARCHAR(255), " +
+                    "balance INT DEFAULT 0)");  // Add balance column
 
             String hashedPassword = BCrypt.hashpw("validpassword", BCrypt.gensalt());
-            stmt.execute("INSERT INTO user (first_name, last_name, email, password) " +
-                    "VALUES ('Test', 'User', 'test@test.com', '" + hashedPassword + "')");
+            stmt.execute("INSERT INTO user (first_name, last_name, email, password, balance) " +
+                    "VALUES ('Test', 'User', 'test@test.com', '" + hashedPassword + "', 100)");  // Add balance value
         }
     }
+
 
 
 
