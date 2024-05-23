@@ -1,5 +1,6 @@
 package com.progtech.etelrendelesapp.controller;
 
+import com.progtech.etelrendelesapp.logger.AppLogger;
 import com.progtech.etelrendelesapp.model.RegisterDAO;
 import com.progtech.etelrendelesapp.model.User;
 import javafx.fxml.FXML;
@@ -11,23 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 public class RegisterController {
-    public void setLast_nameField(TextField last_nameField) {
-        this.last_nameField = last_nameField;
-    }
-
-    public void setFirst_nameField(TextField first_nameField) {
-        this.first_nameField = first_nameField;
-    }
-
-    public void setEmailField(TextField emailField) {
-        this.emailField = emailField;
-    }
-
-    public void setPasswordField(PasswordField passwordField) {
-        this.passwordField = passwordField;
-    }
 
     @FXML
     private TextField last_nameField;
@@ -41,20 +28,10 @@ public class RegisterController {
     @FXML
     private PasswordField passwordField;
 
-    public void setMessageLabel(Label messageLabel) {
-        this.messageLabel = messageLabel;
-    }
-
     @FXML
     private Label messageLabel;
 
     private RegisterDAO registerDAO;
-
-    public RegisterController(RegisterDAO mockRegisterDAO)
-    {
-        registerDAO =  new RegisterDAO();
-    }
-
 
     public RegisterController() {
         registerDAO = new RegisterDAO();
@@ -71,6 +48,7 @@ public class RegisterController {
                 try {
                     if (!registerDAO.emailExists(email)){
                         User user = new User(lastName, firstName, email, password);
+                        AppLogger.log(Level.INFO, "Sikeres regisztráció: " + email);
                         try {
                             registerDAO.registerUser(user);
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));

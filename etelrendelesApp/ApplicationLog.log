@@ -26,3 +26,85 @@ máj. 22, 2024 12:24:08 DE. com.progtech.etelrendelesapp.logger.AppLogger log
 INFO: Rendelés leadva: user@gmail.com, 1800.0 Ft
 máj. 22, 2024 12:24:11 DE. com.progtech.etelrendelesapp.logger.AppLogger log
 INFO: Kijelentkezett: user@gmail.com
+máj. 22, 2024 11:01:36 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres bejelentkezés: user@user
+máj. 22, 2024 11:01:46 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Összeg hozzáadva 10000 Ft felhasználó számára: user@user
+máj. 22, 2024 11:01:59 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Pizza, 2600 Ft
+máj. 22, 2024 11:02:06 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Hamburger, 2400 Ft
+máj. 22, 2024 11:02:08 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user, 5000.0 Ft
+máj. 22, 2024 11:02:12 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Kijelentkezett: user@user
+máj. 22, 2024 11:02:17 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres bejelentkezés: user@user
+máj. 22, 2024 11:23:20 DE. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres regisztráció: testuser@gmail.com
+máj. 23, 2024 1:03:13 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres bejelentkezés: user@user
+máj. 23, 2024 1:03:23 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Összeg hozzáadva 10000 Ft felhasználó számára: user@user
+máj. 23, 2024 1:03:36 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Pizza, 2400 Ft
+máj. 23, 2024 1:03:45 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Hamburger, 2200 Ft
+máj. 23, 2024 1:03:48 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user, 4600.0 Ft
+máj. 23, 2024 1:03:56 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Kijelentkezett: user@user
+máj. 23, 2024 1:11:07 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+WARNING: Sikertelen bejelentkezés: user@user
+máj. 23, 2024 1:11:11 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres bejelentkezés: user@user
+máj. 23, 2024 1:11:29 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Kijelentkezett: user@user
+máj. 23, 2024 1:11:33 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres bejelentkezés: user@user
+máj. 23, 2024 1:11:53 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Pizza, 2400 Ft
+máj. 23, 2024 1:11:58 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Hamburger, 2200 Ft
+máj. 23, 2024 1:12:01 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user, 4600.0 Ft
+máj. 23, 2024 1:12:08 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Pizza, 2400 Ft
+máj. 23, 2024 1:12:10 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user, 2400.0 Ft
+máj. 23, 2024 1:12:21 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Összeg hozzáadva 5000 Ft felhasználó számára: user@user
+máj. 23, 2024 1:12:24 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Kijelentkezett: user@user
+máj. 23, 2024 1:36:38 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres bejelentkezés: user@user
+máj. 23, 2024 1:37:33 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Pizza, 2000 Ft
+máj. 23, 2024 1:37:37 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Hamburger, 1800 Ft
+máj. 23, 2024 1:37:40 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user, 3800.0 Ft
+máj. 23, 2024 1:37:56 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Hamburger, 2400 Ft
+máj. 23, 2024 1:37:58 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user, 2400.0 Ft
+máj. 23, 2024 1:38:07 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Hamburger, 2800 Ft
+máj. 23, 2024 1:38:11 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Coca Cola, 700 Ft
+máj. 23, 2024 1:38:13 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user, 3500.0 Ft
+máj. 23, 2024 1:38:18 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Kijelentkezett: user@user
+máj. 23, 2024 1:38:59 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres regisztráció: user@user.com
+máj. 23, 2024 1:39:09 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Sikeres bejelentkezés: user@user.com
+máj. 23, 2024 1:39:16 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendeléshez hozzáadva: Pizza, 2200 Ft
+máj. 23, 2024 1:39:23 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Összeg hozzáadva 10000 Ft felhasználó számára: user@user.com
+máj. 23, 2024 1:39:26 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Rendelés leadva: user@user.com, 2200.0 Ft
+máj. 23, 2024 1:39:29 DU. com.progtech.etelrendelesapp.logger.AppLogger log
+INFO: Kijelentkezett: user@user.com

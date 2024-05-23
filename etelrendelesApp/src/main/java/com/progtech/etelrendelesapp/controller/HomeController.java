@@ -1,6 +1,5 @@
 package com.progtech.etelrendelesapp.controller;
 
-import com.progtech.etelrendelesapp.database.Database;
 import com.progtech.etelrendelesapp.factory.MenuFactory;
 import com.progtech.etelrendelesapp.factory.MenuFactorySelector;
 import com.progtech.etelrendelesapp.helper.AlertHelper;
@@ -14,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.*;
@@ -23,9 +21,6 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,31 +29,7 @@ public class HomeController {
 
     private User currentUser;
     private HomeDAO homeDAO = new HomeDAO();
-    private MenuController menuController;
     private boolean isFoodSelected = true;
-
-    public HomeController() {
-        this.menuController = new MenuController();
-    }
-
-    public HomeController(User currentUser) {
-        this.currentUser = currentUser;
-    }
-
-    @FXML
-    private Button button_Logout;
-
-    @FXML
-    private Button button_balance;
-
-    @FXML
-    private Button button_food;
-
-    @FXML
-    private Button button_drink;
-
-    @FXML
-    private Button button_pay;
 
     @FXML
     private Label lbl_price;
