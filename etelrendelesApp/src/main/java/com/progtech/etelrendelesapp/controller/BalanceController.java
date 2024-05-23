@@ -1,6 +1,5 @@
 package com.progtech.etelrendelesapp.controller;
 
-import com.progtech.etelrendelesapp.database.Database;
 import com.progtech.etelrendelesapp.helper.AlertHelper;
 import com.progtech.etelrendelesapp.logger.AppLogger;
 import com.progtech.etelrendelesapp.model.BalanceDAO;
@@ -10,9 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
