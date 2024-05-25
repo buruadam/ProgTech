@@ -1,0 +1,20 @@
+.root{
+    -fx-background-color: #efeeec;
+}
+
+.textField{
+    -fx-font-size: 14px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #4d4d4d;
+    -fx-background-radius: 10px;
+}
+
+.addBalanceButton{
+    -fx-background-radius: 15px;
+    -fx-background-color: #494949;
+    -fx-text-fill: #dbdbdb;
+}
+
+.addBalanceButton:hover{
+    -fx-background-color: #353434;
+}

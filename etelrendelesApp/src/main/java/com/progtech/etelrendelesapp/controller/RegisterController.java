@@ -102,8 +102,7 @@ public class RegisterController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/progtech/etelrendelesapp/view/login-view.fxml"));
             Parent root = loader.load();
-            Scene newScene = new Scene(root);
-
+            Scene newScene = new Scene(root, 350,350);
             Stage currentStage = (Stage) emailField.getScene().getWindow();
             currentStage.setScene(newScene);
             currentStage.setTitle("ÉtelrendelésAPP");

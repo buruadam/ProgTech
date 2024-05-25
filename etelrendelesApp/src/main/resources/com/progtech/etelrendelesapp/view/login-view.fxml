@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="240" prefWidth="320" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progtech.etelrendelesapp.controller.LoginController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-   <TextField fx:id="emailField" />
-   <PasswordField fx:id="passwordField" />
+<VBox alignment="CENTER" fillWidth="false" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" spacing="5.0" stylesheets="@../css/loginRegisterStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progtech.etelrendelesapp.controller.LoginController">
+   <Label text="Bejelentkezés" textAlignment="CENTER">
+      <font>
+         <Font size="29.0" />
+      </font>
+   </Label>
+   <TextField fx:id="emailField" promptText="Email" styleClass="textField" />
+   <PasswordField fx:id="passwordField" promptText="Jelszó" styleClass="textField" />
    <Label fx:id="messageLabel" text="" textAlignment="CENTER" />
-    <Button onAction="#handleLogin" text="Bejelentkezés" />
-    <Button onAction="#navToRegister" text="Regisztrálok" />
+    <Button onAction="#handleLogin" prefHeight="31.0" prefWidth="113.0" styleClass="loginButton" text="Bejelentkezés">
+      <font>
+         <Font size="15.0" />
+      </font></Button>
+    <Button onAction="#navToRegister" prefHeight="31.0" prefWidth="113.0" styleClass="goRegisterButton" text="Regisztrálok">
+      <font>
+         <Font size="15.0" />
+      </font></Button>
 </VBox>

@@ -2,17 +2,26 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progtech.etelrendelesapp.controller.RegisterController">
+<BorderPane maxHeight="350.0" prefHeight="350.0" prefWidth="600.0" stylesheets="@../css/loginRegisterStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progtech.etelrendelesapp.controller.RegisterController">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <TextField fx:id="last_nameField" layoutX="225.0" layoutY="58.0" promptText="Vezetéknév" />
-         <TextField fx:id="first_nameField" layoutX="225.0" layoutY="98.0" promptText="Keresztnév" />
-         <TextField fx:id="emailField" layoutX="225.0" layoutY="136.0" promptText="Email" />
-         <PasswordField fx:id="passwordField" layoutX="225.0" layoutY="174.0" promptText="Jelszó" />
-         <Label fx:id="messageLabel" alignment="CENTER" layoutX="173.0" layoutY="224.0" prefHeight="17.0" prefWidth="254.0" text="" textAlignment="CENTER" />
-         <Button layoutX="260.0" layoutY="258.0" mnemonicParsing="false" onAction="#handleRegister" text="Regisztráció" />
-         <Button layoutX="14.0" layoutY="361.0" onAction="#navToLogin" text="Vissza a bejelentkezéshez" />
+      <AnchorPane maxHeight="400.0" maxWidth="600.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <TextField fx:id="last_nameField" layoutX="213.0" layoutY="66.0" promptText="Vezetéknév" styleClass="textField" />
+         <TextField fx:id="first_nameField" layoutX="213.0" layoutY="105.0" promptText="Keresztnév" styleClass="textField" />
+         <TextField fx:id="emailField" layoutX="213.0" layoutY="145.0" promptText="Email" styleClass="textField" />
+         <PasswordField fx:id="passwordField" layoutX="213.0" layoutY="184.0" promptText="Jelszó" styleClass="textField" />
+         <Label fx:id="messageLabel" alignment="CENTER" layoutX="173.0" layoutY="229.0" prefHeight="17.0" prefWidth="254.0" text="" textAlignment="CENTER" />
+         <Button layoutX="248.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="40.0" prefWidth="105.0" styleClass="registerButton" text="Regisztráció">
+            <font>
+               <Font size="15.0" />
+            </font></Button>
+         <Button layoutX="225.0" layoutY="302.0" onAction="#navToLogin" styleClass="backButton" text="Vissza a bejelentkezéshez" />
+         <Label layoutX="238.0" layoutY="14.0" text="Regisztrálás">
+            <font>
+               <Font size="24.0" />
+            </font>
+         </Label>
       </AnchorPane>
    </center>
 </BorderPane>

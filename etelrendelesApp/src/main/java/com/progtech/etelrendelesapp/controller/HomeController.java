@@ -109,6 +109,7 @@ public class HomeController {
             Stage stage = new Stage();
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
 
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -131,6 +132,7 @@ public class HomeController {
             Stage stage = new Stage();
             stage.setTitle("Add Balance");
             stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, "Hiba", "Nem sikerült betölteni az összeadás nézetet: " + e.getMessage());
@@ -267,6 +269,7 @@ public class HomeController {
         Stage stage = new Stage();
         stage.setTitle("Válassz feltétet");
         stage.setScene(new Scene(root));
+        stage.setResizable(false);
         stage.showAndWait();
     }
 

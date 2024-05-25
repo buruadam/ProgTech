@@ -1,0 +1,18 @@
+.root{
+    -fx-background-color: #efeeec;
+}
+
+.checkBox .box, .radioButton .radio{
+    -fx-background-color: #c2c2c2;
+}
+
+.toppingButton{
+    -fx-background-radius: 15px;
+    -fx-background-color: #494949;
+    -fx-text-fill: #dbdbdb;
+}
+
+.toppingButton:hover{
+    -fx-background-color: #353434;
+}
+

@@ -2,8 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="201.0" prefWidth="247.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progtech.etelrendelesapp.controller.ToppingController">
+<AnchorPane prefHeight="201.0" prefWidth="247.0" stylesheets="@../css/toppingStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progtech.etelrendelesapp.controller.ToppingController">
    <children>
       <GridPane layoutX="24.0" layoutY="31.0" prefHeight="114.0" prefWidth="216.0">
         <columnConstraints>
@@ -16,16 +17,22 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <CheckBox fx:id="checkBox_toppingOne" mnemonicParsing="false" prefHeight="17.0" prefWidth="84.0" text="" />
-            <CheckBox fx:id="checkBox_toppingTwo" mnemonicParsing="false" text="" GridPane.columnIndex="1" />
-            <CheckBox fx:id="checkBox_toppingThree" mnemonicParsing="false" text="" GridPane.rowIndex="1" />
-            <CheckBox fx:id="checkBox_toppingFour" mnemonicParsing="false" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <CheckBox fx:id="checkBox_toppingFive" mnemonicParsing="false" text="" GridPane.rowIndex="2" />
-            <RadioButton fx:id="radioButton_noTopping" mnemonicParsing="false" text="Nem kérek" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <CheckBox fx:id="checkBox_toppingOne" mnemonicParsing="false" prefHeight="17.0" prefWidth="84.0" styleClass="checkBox" text="" />
+            <CheckBox fx:id="checkBox_toppingTwo" mnemonicParsing="false" styleClass="checkBox" text="" GridPane.columnIndex="1" />
+            <CheckBox fx:id="checkBox_toppingThree" mnemonicParsing="false" styleClass="checkBox" text="" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkBox_toppingFour" mnemonicParsing="false" styleClass="checkBox" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <CheckBox fx:id="checkBox_toppingFive" mnemonicParsing="false" styleClass="checkBox" text="" GridPane.rowIndex="2" />
+            <RadioButton fx:id="radioButton_noTopping" mnemonicParsing="false" styleClass="radioButton" text="Nem kérek" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Label layoutX="41.0" layoutY="14.0" text="Extra feltét. Minden feltét 200 Ft" />
-      <Button fx:id="button_addTopping" layoutX="169.0" layoutY="155.0" mnemonicParsing="false" onAction="#addToppings" text="Elment" />
+      <Label layoutX="25.0" layoutY="14.0" text="Extra feltét. Minden feltét 200 Ft">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Button fx:id="button_addTopping" layoutX="143.0" layoutY="155.0" mnemonicParsing="false" onAction="#addToppings" prefHeight="32.0" prefWidth="79.0" styleClass="toppingButton" text="Elment">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
       <Label layoutX="24.0" layoutY="159.0" text="Összesen:" />
       <Label fx:id="lbl_totalPrice" layoutX="82.0" layoutY="159.0" prefHeight="17.0" prefWidth="44.0" text="0 Ft" />
    </children>
