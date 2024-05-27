@@ -31,7 +31,7 @@ A projekt Java programnyelven kerül elkészítésre. A programkódban tervezés
 - Adatbázis kapcsolat
 - Tervezési minták használata
 
-### 5. Fejlesztő eszközök
+## 5. Fejlesztő eszközök
 
 A fejlesztés során használt eszközök:
 
